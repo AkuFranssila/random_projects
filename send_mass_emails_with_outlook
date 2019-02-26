@@ -1,0 +1,40 @@
+# coding=utf-8
+#import win32com.client as win32 --> python -m pip install pywin32
+import pandas as pd #--> python -m pip install pandas
+
+#Load the file as CSV not as .xlsx
+file = pd.read_csv("jonna_test_file.csv", delimiter = ',')
+file = file[['email', 'role']]
+
+#Go through the file and save unique emails to all_emails list
+all_emails = []
+for index, row in file.iterrows():
+    print(row['email'], row['role'])
+    email = row['email']
+    if email not in all_emails:
+        all_emails.append(email)
+
+print (all_emails)
+
+#Go through the items again in the file and collect roles of unique email to single_email_roles, then send the email that contains the roles. Get the email from the list we generated earlier
+for one_email in all_emails:
+    single_email_roles = []
+    for index, row in file.iterrows():
+        roles = row['role']
+        if one_email == row['email']:
+            single_email_roles.append(roles)
+
+    print (one_email)
+    print (single_email_roles)
+    roles_in_text = ''
+    for one_role in single_email_roles:
+        roles_in_text = roles_in_text + '\n' + one_role
+
+    print (roles_in_text)
+
+    #outlook = win32.Dispatch('outlook.application')
+    #mail = outlook.CreateItem(0)
+    #mail.To = one_email
+    #mail.Subject = 'Please apply for the following roles in system X'
+    #mail.Body = 'Apply to the following roles in the AMAZING NEW TIETO SYSTEM: \n' + roles_in_text
+    #mail.Send()
